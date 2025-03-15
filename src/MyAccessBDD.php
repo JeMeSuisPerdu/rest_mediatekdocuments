@@ -463,7 +463,7 @@ class MyAccessBDD extends AccessBDD {
         !isset($champs['DateCommande']) || 
         !isset($champs['Montant']) || 
         !isset($champs['DateFinAbonnement']) || 
-        empty($champs['IdRevue']) ||  
+        empty($champs['IdRevue']) ||
         empty($champs['DateCommande']) || 
         empty($champs['Montant']) || 
         empty($champs['DateFinAbonnement'])) {
