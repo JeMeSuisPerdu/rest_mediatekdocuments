@@ -425,22 +425,22 @@ class MyAccessBDD extends AccessBDD {
             empty($champs['Id'])) {
             return false;
         }
-    $requeteCommandeDocument = "DELETE FROM commandedocument WHERE id = :id";
-    $paramsCommandeDocument = [
-        'id' => $champs['Id']
-    ];
-    $resultCommandeDocument = $this->conn->updateBDD($requeteCommandeDocument, $paramsCommandeDocument);
     
-    $requeteCommande = "DELETE FROM commande WHERE id = :id";
-    $paramsCommande = [
-        'id' => $champs['Id']
-    ];
-    $resultCommande = $this->conn->updateBDD($requeteCommande, $paramsCommande);
+        // Créer la requête pour supprimer d'abord le document puis la commande
+        $requete = "
+            DELETE FROM commande WHERE id = :id;
+            DELETE FROM commandedocument WHERE id = :id;
+        ";
     
-
-        return $resultCommande + $resultCommandeDocument;
+        // Paramètres pour les deux requêtes
+        $params = [
+            'id' => $champs['Id']
+        ];
     
+        // Passer la requête à la méthode updateBDD
+        return $this->conn->updateBDD($requete, $params);
     }
+    
     
     /**
      * Récupère toutes les infos d'un abonnement
@@ -522,22 +522,12 @@ class MyAccessBDD extends AccessBDD {
             return false;
         }
     
-    
-    $requeteCommandeDocument = "DELETE FROM abonnement WHERE id = :id";
-    $paramsCommandeDocument = [
+    $requete = "DELETE FROM abonnement WHERE id = :id; DELETE FROM commandeabonnement WHERE id = :id;";
+    $paramsCommandeAbonnement = [
         'id' => $champs['Id']
     ];
-    $resultCommandeDocument = $this->conn->updateBDD($requeteCommandeDocument, $paramsCommandeDocument);
-    
-    $requeteCommande = "DELETE FROM commandeabonnement WHERE id = :id";
-    $paramsCommande = [
-        'id' => $champs['Id']
-    ];
-    $resultCommande = $this->conn->updateBDD($requeteCommande, $paramsCommande);
-    
 
-        return $resultCommande + $resultCommandeDocument;
-    
+    return $this->conn->updateBDD($requete, $paramsCommandeAbonnement);
     }
 
     /**
